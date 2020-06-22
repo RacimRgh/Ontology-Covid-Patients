@@ -9,6 +9,7 @@ from rdflib.namespace import OWL, RDF, RDFS
 import re
 # Os import pour avoir absoulute path
 import os
+
 print("Working Directory: "+os.getcwd())
 print("Traitements maladies...")
 myOntology = Namespace("http://www.semanticweb.org/myOntology#")
