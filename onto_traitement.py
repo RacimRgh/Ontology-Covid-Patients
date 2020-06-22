@@ -29,8 +29,8 @@ for c in ascii_uppercase:
     fin = re.findall(r'href="Substance/.*-.*.htm">(\w*)', res)
     for mdc in fin:
         medic = URIRef(mdc)
-        g.add((medic, RDF.type, OWL.Class))
-        g.add((medic, RDFS.subClassOf, lettre))
+        g.add((medic, RDF.type, myOntology[c]))
+        g.add((medic, RDFS.Literal, myOntology[c]))
 
 # Output vers le fichier .owl
 Graph.serialize(g, destination='maladies.owl', format='turtle')

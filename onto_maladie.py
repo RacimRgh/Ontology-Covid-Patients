@@ -2,7 +2,7 @@
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 # RDF imports
-from rdflib import Graph, URIRef
+from rdflib import Graph, URIRef, Literal
 from rdflib import Namespace
 from rdflib.namespace import OWL, RDF, RDFS
 # Regex import
@@ -38,9 +38,9 @@ for mld in types_maladies:
 for maladie in noms_types:
     if maladie != "dermatologie" and maladie != "gynecologie":
         # Créer le concept correspondant au type de maladie
-        type = URIRef(myOntology[maladie])
-        g.add((type, RDF.type, OWL.Class))
-        g.add((type, RDFS.subClassOf, Maladies))
+        type_m = URIRef(myOntology[maladie])
+        g.add((type_m, RDF.type, OWL.Class))
+        g.add((type_m, RDFS.subClassOf, Maladies))
         # Parser la liste des maladies de la catégorie
         page_maladie = urlopen(quote_page+maladie)
         soup = BeautifulSoup(page_maladie, 'html.parser')
@@ -55,8 +55,8 @@ for maladie in noms_types:
             if "maladies" in lien_maladie[0] and condition:
                 liste_maladies.append(lien_maladie[0].split('/')[-2])
                 nom = URIRef(myOntology[lien_maladie[0].split('/')[-2]])
-                g.add((nom, RDF.type, OWL.Class))
-                g.add((nom, RDFS.subClassOf, type))
+                g.add((nom, RDF.type, myOntology[maladie]))
+                g.add((nom, RDFS.Literal, myOntology[maladie]))
 # Output vers le fichier .owl
 Graph.serialize(g, destination='maladies.owl', format='turtle')
 # Appeller le 2ème fichier
