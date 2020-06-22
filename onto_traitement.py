@@ -34,3 +34,5 @@ for c in ascii_uppercase:
 
 # Output vers le fichier .owl
 Graph.serialize(g, destination='maladies.owl', format='turtle')
+# Appeller le 3ème fichier
+exec(open('onto_localisation.py').read())
