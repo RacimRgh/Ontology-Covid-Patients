@@ -12,6 +12,6 @@ After downloading and installing Python3, installing pip, use theses commands
 ## How to use
 To start it, type in the CMD:
 
-python3 onto_maladie.py 
+**python3 onto_maladie.py**
 
 The file *maladies.owl* will be created and updated in the current working directory 
