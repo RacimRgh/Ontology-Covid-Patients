@@ -15,9 +15,9 @@ Localisation = URIRef(myOntology['Localisation'])
 g.add((Localisation, RDF.type, OWL.Class))
 g.add((Localisation, RDFS.subClassOf, OWL.Thing))
 # Recuperer les wilayas
-df = pd.read_csv('wilayas.csv', usecols=['nom', 'code'])
+df = pd.read_csv('Localisation/wilayas.csv', usecols=['nom', 'code'])
 # Recuperer les communes
-df_cm = pd.read_csv('communes.csv', usecols=['nom', 'wilaya_id'])
+df_cm = pd.read_csv('Localisation/communes.csv', usecols=['nom', 'wilaya_id'])
 for index, row in df.iterrows():
     # Ajouter la wilaya dans l'ontologie
     nom_wil = row['nom'].replace(' ', '')
