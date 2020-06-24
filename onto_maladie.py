@@ -9,6 +9,8 @@ import types
 # Os import pour la gestion des path
 import os
 
+default_world.set_backend(filename="file_back3.sqlite3", exclusive=False)
+
 onto = get_ontology('maladies.owl')
 myOntology = 'http://www.semanticweb.org/myOntology#'
 

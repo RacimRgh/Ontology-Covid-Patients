@@ -4,9 +4,13 @@ from owlready2 import *  # pylint: disable=unused-wildcard-import
 # pylint: disable=undefined-variable
 
 print('Traitement patients...')
-onto = get_ontology('maladies.owl')
+onto = get_ontology('maladies.owl').load()
 myOntology = 'http://www.semanticweb.org/myOntology#'
 classes = list(onto.classes())
+i = 0
+for x in classes:
+    print(str(i)+' '+x.name)
+    i += 1
 with onto:
     class Humain(Thing):
         pass
@@ -54,7 +58,22 @@ with onto:
     for x in sympt:
         symptome = Symptomes(x)
 
+    class Consultation(Thing):
+        pass
+
+    class date_consultation(DataProperty, FunctionalProperty):
+        range = [str]
+        domain = [Consultation]
+
+    class cause_consultation(DataProperty):
+        range = [str]
+        domain = [Consultation]
+    # Patient reserve une consultation
+
     class Patient(Humain):
+        pass
+
+    class reserve(Patient >> Consultation):
         pass
 
     class Enfant(Patient):
@@ -76,12 +95,12 @@ with onto:
 
     # Patient prend des traitements
 
-    class prend(Patient >> classes[17]):
+    class prend(Patient >> classes[16]):
         pass
 
     # Patient habite dans une commune
 
-    class habite_a(Patient >> classes[18]):
+    class habite_a(Patient >> classes[17]):
         pass
 
     # Patient présente des symptomes
@@ -97,10 +116,9 @@ with onto:
         range = [float]
         domain = [Patient]
 
+    class ID(DataProperty, FunctionalProperty):
+        range = [str]
+        domain = [Patient]
+        pass
 
 onto.save(file='maladies.owl', format='ntriples')
-
-# i = 0
-# for x in classes:
-#     print(str(i)+' '+x.name)
-#     i += 1

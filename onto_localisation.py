@@ -4,7 +4,6 @@ import numpy as np
 from owlready2 import *  # pylint: disable=unused-wildcard-import
 import types
 
-
 print('Traitement localisation...')
 onto = get_ontology('maladies.owl').load()
 myOntology = 'http://www.semanticweb.org/myOntology#'
