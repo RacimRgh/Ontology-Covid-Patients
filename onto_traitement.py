@@ -21,10 +21,10 @@ for c in ascii_uppercase:
         'https://www.vidal.fr/Sommaires/Substances-'+c+'.htm')
     res = url.read().decode('utf-8')
     fin = re.findall(r'href="Substance/.*-.*.htm">(\w*)', res)
-    # for mdc in fin:
-    #     medic = URIRef(mdc)
-    #     g.add((medic, RDF.type, Traitements))
-    #     g.add((medic, RDFS.Literal, Traitements))
+    # Parcours de tout les médicaments trouvés
+    for mdc in fin:
+        # Instanciation des médicaments
+        medic = Traitements(mdc)
 
 # Sauvegarder la nouvelle ontologie
 onto.save(file='maladies.owl', format='ntriples')

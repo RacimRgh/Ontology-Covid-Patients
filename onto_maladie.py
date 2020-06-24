@@ -3,10 +3,11 @@ from urllib.request import urlopen
 from bs4 import BeautifulSoup
 # Regex import
 import re
+# Owlready
 from owlready2 import *  # pylint: disable=unused-wildcard-import
-# Os import pour avoir absoulute path
-import os
 import types
+# Os import pour la gestion des path
+import os
 
 onto = get_ontology('maladies.owl').load()
 myOntology = 'http://www.semanticweb.org/myOntology#'
@@ -59,6 +60,7 @@ for maladie in noms_types:
                 nom = lien_maladie[0].split('/')[-2]
                 # with onto:
                 #     nom_m = Maladies(nom)
+
             # g.add((nom, RDF.type, myOntology[maladie]))
             # g.add((nom, RDFS.Literal, myOntology[maladie]))
 
