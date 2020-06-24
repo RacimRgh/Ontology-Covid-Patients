@@ -9,7 +9,7 @@ import types
 # Os import pour la gestion des path
 import os
 
-onto = get_ontology('maladies.owl').load()
+onto = get_ontology('maladies.owl')
 myOntology = 'http://www.semanticweb.org/myOntology#'
 
 print("Working Directory: "+os.getcwd())
@@ -32,14 +32,14 @@ name_box = soup.find(
 types_maladies = [i['href'] for i in name_box.find_all('a', href=True)]
 noms_types = []
 liste_maladies = []
-
+i = 1
 # Récupérer les noms des types des maladies sans le lien complet
 for mld in types_maladies:
     noms_types.append(mld.split('/')[-1])
 
 # Parcourir chaque type de maladie
 for maladie in noms_types:
-    if maladie != "dermatologie" and maladie != "gynecologie":
+    if maladie != "dermatologie" and maladie != "gynecologie" and maladie != "ophtalmologie":
         # Création de chaque type de maladie
         with onto:
             type_m = types.new_class(maladie, (Maladies,))
@@ -54,16 +54,23 @@ for maladie in noms_types:
             condition = ("myopathies" not in lien_maladie[0]
                          and "definition" not in lien_maladie[0]
                          and "symptomes" not in lien_maladie[0]
-                         and "qu-est-ce" not in lien_maladie[0])
+                         and "qu-est-ce" not in lien_maladie[0]
+                         and "gastro-enterite" not in lien_maladie[0]
+                         and "galactosemie" not in lien_maladie[0]
+                         and "maladie-hartnup" not in lien_maladie[0]
+                         and "accident-vasculaire-cerebral" not in lien_maladie[0]
+                         and "cancer-poumon" not in lien_maladie[0]
+                         and "embolie-pulmonaire" not in lien_maladie[0]
+                         and "myasthenie" not in lien_maladie[0]
+                         and "dysfonction-erectile" not in lien_maladie[0])
+
             if "maladies" in lien_maladie[0] and condition:
                 liste_maladies.append(lien_maladie[0].split('/')[-2])
                 nom = lien_maladie[0].split('/')[-2]
-                # with onto:
-                #     nom_m = Maladies(nom)
-
-            # g.add((nom, RDF.type, myOntology[maladie]))
-            # g.add((nom, RDFS.Literal, myOntology[maladie]))
-
+                print(maladie + ' ' + nom)
+                inst_maladie = list(onto.classes())[i]()
+                inst_maladie.iri = myOntology + nom
+        i += 1
 # Output vers le fichier .owl
 onto.save('maladies.owl', format='ntriples')
 # Appeller le 2ème fichier
