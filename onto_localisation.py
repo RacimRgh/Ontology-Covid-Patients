@@ -6,7 +6,7 @@ import types
 
 print('Traitement localisation...')
 onto = get_ontology('maladies.owl').load()
-myOntology = 'http://www.semanticweb.org/myOntology#'
+myOntology = 'http://www.semanticweb.org/racim_katia/maladies.owl#'
 
 with onto:
     class Localisation(Thing):
@@ -34,7 +34,6 @@ for index, row in df.iterrows():
     liste_classes = list(onto.classes())
     for elt in liste_communes:
         if row['code'] == elt[0]:
-            print(liste_classes[i].name + ' - '+str(elt[0])+elt[1])
             commune = liste_classes[i]()
             commune.iri = myOntology + elt[1] + '_' + str(elt[0])
     i += 1

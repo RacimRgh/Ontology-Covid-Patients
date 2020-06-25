@@ -11,7 +11,7 @@ import os
 
 default_world.set_backend(filename="file_back3.sqlite3", exclusive=False)
 
-onto = get_ontology('maladies.owl')
+onto = get_ontology('http://www.semanticweb.org/racim_katia/maladies.owl#')
 myOntology = 'http://www.semanticweb.org/myOntology#'
 
 print("Working Directory: "+os.getcwd())
@@ -69,7 +69,6 @@ for maladie in noms_types:
             if "maladies" in lien_maladie[0] and condition:
                 liste_maladies.append(lien_maladie[0].split('/')[-2])
                 nom = lien_maladie[0].split('/')[-2]
-                print(maladie + ' ' + nom)
                 inst_maladie = list(onto.classes())[i]()
                 inst_maladie.iri = myOntology + nom
         i += 1

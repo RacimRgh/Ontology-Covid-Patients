@@ -10,7 +10,7 @@ import types
 print('Traitement médicaments...')
 
 onto = get_ontology('maladies.owl').load()
-myOntology = 'http://www.semanticweb.org/myOntology#'
+myOntology = 'http://www.semanticweb.org/racim_katia/maladies.owl#'
 # Création de la classe Traitements
 with onto:
     class Traitements(Thing):
