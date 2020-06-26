@@ -1,6 +1,5 @@
 # OwlReady2
 from owlready2 import *  # pylint: disable=unused-wildcard-import
-
 # pylint: disable=undefined-variable
 
 print('Traitement patients...')
@@ -79,6 +78,8 @@ with onto:
     class Adulte(Patient):
         pass
 
+    AllDisjoint([Adulte, Enfant])
+
     class Femme(Adulte):
         pass
 
@@ -128,6 +129,16 @@ with onto:
         domain = [Patient]
         pass
 
+    class taille(DataProperty, FunctionalProperty):
+        range = [int]
+        domain = [Patient]
+        pass
+
+    class Temperature(DataProperty, FunctionalProperty):
+        range = [int]
+        domain = [Patient]
+        pass
+
     class Orientation(Thing):
         pass
 
@@ -146,15 +157,10 @@ with onto:
     class ausculté_par(Patient >> Medecin):
         pass
 
-onto.save(file='maladies.owl', format='ntriples')
+    class a_ausculté(Medecin >> Patient):
+        inverse_property = ausculté_par
+        pass
 
-i = 0
-for x in list(onto.classes()):
-    print(i)
-    print(x.iri)
-    print(x.namespace)
-    print(x.name)
-    print('_______________________\n')
-    i += 1
+onto.save(file='maladies.owl', format='ntriples')
 
 exec(open('ajoute_patients.py').read())

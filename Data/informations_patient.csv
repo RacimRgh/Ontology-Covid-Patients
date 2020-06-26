@@ -1,4 +1,4 @@
-ID,Age,Sexe,Enceinte,Nom,Prénom,Poids,Wilaya,Commune,Antécédent médical,Traitements,Symptomes
-A51,36,femme,oui,Belouta,Racima,72,Alger,BabAzzouar,pneumonie,"paracétamol,dopamine","fièvre,difficulté_respiration,essoufflement"
-S36,19,homme,non,Lakhdar,Moh,120,Oran,Arzew,,,
-A45,11,femme,non,Jiji,Aaa,30,TiziOuzou,Azazga,"scoliose,allergie-pollen","bléomicine,lovastatine,metformine","toux,fièvre,fatigue_inhabituelle"
+ID,Age,Sexe,Enceinte,Nom,Prénom,Poids,Taille,Wilaya,Commune,Antécédent médical,Traitements,Symptomes,Temperature
+A51,36,f,oui,Belouta,Racima,72,180,Alger,BabAzzouar,pneumonie,"paracétamol,dopamine","fièvre,difficulté_respiration,essoufflement",38
+S36,19,m,non,Lakhdar,Moh,120,195,Oran,Arzew,,,,36
+A45,11,f,non,Jiji,Aaa,30,130,TiziOuzou,Azazga,"scoliose,allergie-pollen","bléomicine,lovastatine,metformine","toux,fièvre,fatigue_inhabituelle",38
