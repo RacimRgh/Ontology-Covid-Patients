@@ -26,7 +26,12 @@ with onto:
     class Medecin(Humain):
         pass
 
-    class Specialite(DataProperty):
+    class spécialité(DataProperty):
+        range = [str]
+        domaine = [Medecin]
+        pass
+
+    class date_consultation(DataProperty):
         range = [str]
         domain = [Medecin]
 
@@ -54,22 +59,9 @@ with onto:
     for x in sympt:
         symptome = Symptomes(x)
 
-    class Consultation(Thing):
-        pass
-
-    class date_consultation(DataProperty, FunctionalProperty):
-        range = [str]
-        domain = [Consultation]
-
-    class cause_consultation(DataProperty):
-        range = [str]
-        domain = [Consultation]
     # Patient reserve une consultation
 
     class Patient(Humain):
-        pass
-
-    class reserve(Patient >> Consultation):
         pass
 
     class Enfant(Patient):
@@ -139,17 +131,22 @@ with onto:
         domain = [Patient]
         pass
 
+    class Gravité_symptomes(DataProperty):
+        range = [str]
+        domain = [Patient]
+        pass
+
+    class prise_en_charge(DataProperty):
+        range = [str]
+        domaine = [Patient]
+        pass
+
     class Orientation(Thing):
         pass
 
-    class Cabinet(Orientation):
-        pass
-
-    class Hopital(Orientation):
-        pass
-
-    class Maison(Orientation):
-        pass
+    # Instanciation des Orientation
+    Orientation('Hopital')
+    Orientation('Maison')
 
     class orienté_vers(Patient >> Orientation):
         pass

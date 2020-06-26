@@ -1,6 +1,4 @@
 from owlready2 import *  # pylint: disable=unused-wildcard-import
-import rdflib
-import numpy as np
 import pandas as pd
 
 
@@ -14,6 +12,7 @@ def get_num_classe(nom_classe):
         i += 1
 
 
+print('Traitement fichier patients...')
 onto = get_ontology('maladies.owl').load()
 myOntology = 'http://www.semanticweb.org/racim_katia/maladies.owl#'
 # Récupérer une liste de toutes les classes de l'onto
@@ -88,3 +87,6 @@ for index, row in patients_df.iterrows():
 
 # Output vers le fichier .owl
 onto.save(file='maladies.owl', format='ntriples')
+
+
+exec(open('fiche_medecin.py').read())
