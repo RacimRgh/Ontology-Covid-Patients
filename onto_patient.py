@@ -85,6 +85,16 @@ with onto:
     class Homme(Adulte):
         pass
 
+    AllDisjoint([Femme, Homme])
+
+    class Fille(Enfant):
+        pass
+
+    class Garçon(Enfant):
+        pass
+
+    AllDisjoint([Fille, Garçon])
+
     # Patient est attein de maladies
 
     class est_atteint_de(Patient >> classes[0]):
