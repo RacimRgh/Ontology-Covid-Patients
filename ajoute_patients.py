@@ -22,18 +22,20 @@ patients_df = pd.read_csv('Data/informations_patient.csv')
 
 # Parcourir le fichier de patient ligne par ligne
 for index, row in patients_df.iterrows():
-    # Instancier le patient selon l'age et le sexe (enfant/adulte) (homme/femme)
-    if (row['Age'] > 16):
-        if(row['Sexe'] == 'f'):
-            patient = classes[get_num_classe('Femme')]
-        else:
-            patient = classes[get_num_classe('Homme')]
-    else:
-        if(row['Sexe'] == 'f'):
-            patient = classes[get_num_classe('Fille')]
-        else:
-            patient = classes[get_num_classe('Garçon')]
+    # # Instancier le patient selon l'age et le sexe (enfant/adulte) (homme/femme)
+    # if (row['Age'] > 16):
+    #     if(row['Sexe'] == 'f'):
+    #         patient = classes[get_num_classe('Femme')]
+    #     else:
+    #         patient = classes[get_num_classe('Homme')]
+    # else:
+    #     if(row['Sexe'] == 'f'):
+    #         patient = classes[get_num_classe('Fille')]
+    #     else:
+    #         patient = classes[get_num_classe('Garçon')]
+    patient = classes[get_num_classe('Patient')]
     pat = patient()         # Instancier le patient
+    pat.Sexe = row['Sexe']
     pat.name = row['ID']
     pat.ID = row['ID']
     pat.Age = row['Age']

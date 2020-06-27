@@ -13,7 +13,6 @@ import os
 def maladie_existe(nom):
     individus = list(onto.individuals())
     for elt in individus:
-        print(elt.name)
         if elt.name == nom:
             return True
     return False

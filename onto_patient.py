@@ -64,29 +64,34 @@ with onto:
     class Patient(Humain):
         pass
 
-    class Enfant(Patient):
+    class Sexe(DataProperty, FunctionalProperty):
+        range = [str]
+        domain = [Patient]
         pass
 
-    class Adulte(Patient):
-        pass
+    # class Enfant(Patient):
+    #     pass
 
-    AllDisjoint([Adulte, Enfant])
+    # class Adulte(Patient):
+    #     pass
 
-    class Femme(Adulte):
-        pass
+    # AllDisjoint([Adulte, Enfant])
 
-    class Homme(Adulte):
-        pass
+    # class Femme(Adulte):
+    #     pass
 
-    AllDisjoint([Femme, Homme])
+    # class Homme(Adulte):
+    #     pass
 
-    class Fille(Enfant):
-        pass
+    # AllDisjoint([Femme, Homme])
 
-    class Garçon(Enfant):
-        pass
+    # class Fille(Enfant):
+    #     pass
 
-    AllDisjoint([Fille, Garçon])
+    # class Garçon(Enfant):
+    #     pass
+
+    # AllDisjoint([Fille, Garçon])
 
     # Patient est attein de maladies
 
@@ -110,7 +115,7 @@ with onto:
 
     class est_enceinte(DataProperty, FunctionalProperty):
         range = [bool]
-        domain = [Femme]
+        domain = [Patient]
 
     class poids(DataProperty, FunctionalProperty):
         range = [float]
