@@ -9,6 +9,16 @@ import types
 # Os import pour la gestion des path
 import os
 
+
+def maladie_existe(nom):
+    individus = list(onto.individuals())
+    for elt in individus:
+        print(elt.name)
+        if elt.name == nom:
+            return True
+    return False
+
+
 default_world.set_backend(filename="file_back3.sqlite3", exclusive=False)
 
 onto = get_ontology('http://www.semanticweb.org/racim_katia/maladies.owl#')
@@ -41,7 +51,7 @@ for mld in types_maladies:
 
 # Parcourir chaque type de maladie
 for maladie in noms_types:
-    if maladie != "dermatologie" and maladie != "gynecologie" and maladie != "ophtalmologie":
+    if maladie != "gynecologie" and maladie != "ophtalmologie":
         # Création de chaque type de maladie
         with onto:
             type_m = types.new_class(maladie, (Maladies,))
@@ -56,21 +66,14 @@ for maladie in noms_types:
             condition = ("myopathies" not in lien_maladie[0]
                          and "definition" not in lien_maladie[0]
                          and "symptomes" not in lien_maladie[0]
-                         and "qu-est-ce" not in lien_maladie[0]
-                         and "gastro-enterite" not in lien_maladie[0]
-                         and "galactosemie" not in lien_maladie[0]
-                         and "maladie-hartnup" not in lien_maladie[0]
-                         and "accident-vasculaire-cerebral" not in lien_maladie[0]
-                         and "cancer-poumon" not in lien_maladie[0]
-                         and "embolie-pulmonaire" not in lien_maladie[0]
-                         and "myasthenie" not in lien_maladie[0]
-                         and "dysfonction-erectile" not in lien_maladie[0])
+                         and "qu-est-ce" not in lien_maladie[0])
 
             if "maladies" in lien_maladie[0] and condition:
                 liste_maladies.append(lien_maladie[0].split('/')[-2])
                 nom = lien_maladie[0].split('/')[-2]
-                inst_maladie = list(onto.classes())[i]()
-                inst_maladie.iri = myOntology + nom
+                if not maladie_existe(nom):
+                    inst_maladie = list(onto.classes())[i]()
+                    inst_maladie.iri = myOntology + nom
         i += 1
 # Output vers le fichier .owl
 onto.save('maladies.owl', format='ntriples')
