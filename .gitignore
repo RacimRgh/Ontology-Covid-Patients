@@ -1,4 +1,3 @@
 __pycache__/
 file_back3.sqlite3
-maladiesDef.owl
-maladies_out.rdf
+ontology_patients_out.rdf

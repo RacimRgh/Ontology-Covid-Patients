@@ -1,168 +1,145 @@
 # OwlReady2
-from owlready2 import *  # pylint: disable=unused-wildcard-import
+from owlready2 import *    # pylint: disable=unused-wildcard-import
+from onto_functions import get_num_classe
 # pylint: disable=undefined-variable
+# pylint: disable=unused-variable
 
-print('Traitement patients...')
-onto = get_ontology('maladies.owl').load()
-myOntology = 'http://www.semanticweb.org/racim_katia/maladies.owl#'
-classes = list(onto.classes())
 
-with onto:
-    class Humain(Thing):
-        pass
+def create_patient(onto):
+    print('Traitement patients...')
+    # Récuperer toutes les classes dans une liste
+    classes = list(onto.classes())
+    with onto:
+        class Humain(Thing):
+            pass
 
-    class Nom(DataProperty, FunctionalProperty):
-        range = [str]
-        domain = [Humain]
+        class Nom(DataProperty, FunctionalProperty):
+            range = [str]
+            domain = [Humain]
 
-    class Prenom(DataProperty):
-        range = [str]
-        domain = [Humain]
+        class Prenom(DataProperty):
+            range = [str]
+            domain = [Humain]
 
-    class Age(DataProperty, FunctionalProperty):
-        range = [int]
-        domain = [Humain]
+        class Age(DataProperty, FunctionalProperty):
+            range = [int]
+            domain = [Humain]
 
-    class Medecin(Humain):
-        pass
+        class Medecin(Humain):
+            pass
 
-    class spécialité(DataProperty):
-        range = [str]
-        domaine = [Medecin]
-        pass
+        class Spécialité(DataProperty):
+            range = [str]
+            domain = [Medecin]
+            pass
 
-    class date_consultation(DataProperty):
-        range = [str]
-        domain = [Medecin]
+        class Date_Consultation(DataProperty):
+            range = [str]
+            domain = [Medecin]
 
-    # Symptomes du Covid
+        # Symptomes du Covid
 
-    class Symptomes(Thing):
-        pass
-    # Instanciation des symptomes
-    sympt = [
-        'courbatures',
-        'diarhee',
-        'difficulté_respiration',
-        'décoloration_des_doigts',
-        'essoufflement',
-        'fatigue_inhabituelle',
-        'fièvre',
-        'mal_de_gorge',
-        'maux_de_tête',
-        'perte_du_goût',
-        'perte_odorat',
-        'toux_sèche',
-        'toux',
-        'éruption_cutanée'
-    ]
-    for x in sympt:
-        symptome = Symptomes(x)
+        class Symptomes(Thing):
+            pass
+        # Instanciation des symptomes
+        sympt = [
+            'courbatures',
+            'diarhee',
+            'difficulté_respiration',
+            'décoloration_des_doigts',
+            'essoufflement',
+            'fatigue_inhabituelle',
+            'fièvre',
+            'mal_de_gorge',
+            'maux_de_tête',
+            'perte_du_goût',
+            'perte_odorat',
+            'toux_sèche',
+            'toux',
+            'éruption_cutanée'
+        ]
+        for x in sympt:
+            symptome = Symptomes(x)
 
-    # Patient reserve une consultation
+        # Patient reserve une consultation
 
-    class Patient(Humain):
-        pass
+        class Patient(Humain):
+            pass
 
-    class Sexe(DataProperty, FunctionalProperty):
-        range = [str]
-        domain = [Patient]
-        pass
+        class Sexe(DataProperty, FunctionalProperty):
+            range = [str]
+            domain = [Patient]
+            pass
 
-    # class Enfant(Patient):
-    #     pass
+        # Patient est atteint de maladies
 
-    # class Adulte(Patient):
-    #     pass
+        class est_atteint_de(Patient >> classes[get_num_classe('Maladies', onto)]):
+            pass
 
-    # AllDisjoint([Adulte, Enfant])
+        # Patient prend des traitements
 
-    # class Femme(Adulte):
-    #     pass
+        class prend(Patient >> classes[get_num_classe('Traitements', onto)]):
+            pass
 
-    # class Homme(Adulte):
-    #     pass
+        # Patient habite dans une Localisation (wilaya et commune)
 
-    # AllDisjoint([Femme, Homme])
+        class habite_a(Patient >> classes[get_num_classe('Localisation', onto)]):
+            pass
 
-    # class Fille(Enfant):
-    #     pass
+        # Patient présente des symptomes
 
-    # class Garçon(Enfant):
-    #     pass
+        class présente(Patient >> Symptomes):
+            pass
 
-    # AllDisjoint([Fille, Garçon])
+        class Est_Enceinte(DataProperty, FunctionalProperty):
+            range = [bool]
+            domain = [Patient]
 
-    # Patient est attein de maladies
+        class Poids(DataProperty, FunctionalProperty):
+            range = [float]
+            domain = [Patient]
 
-    class est_atteint_de(Patient >> classes[0]):
-        pass
+        class ID(DataProperty, FunctionalProperty):
+            range = [str]
+            domain = [Patient]
+            pass
 
-    # Patient prend des traitements
+        class Taille(DataProperty, FunctionalProperty):
+            range = [int]
+            domain = [Patient]
+            pass
 
-    class prend(Patient >> classes[16]):
-        pass
+        class Temperature(DataProperty, FunctionalProperty):
+            range = [int]
+            domain = [Patient]
+            pass
 
-    # Patient habite dans une commune
+        class Gravité_symptomes(DataProperty):
+            range = [str]
+            domain = [Patient]
+            pass
 
-    class habite_a(Patient >> classes[17]):
-        pass
+        class Prise_En_Charge(DataProperty):
+            range = [str]
+            domain = [Patient]
+            pass
 
-    # Patient présente des symptomes
+        class Orientation(Thing):
+            pass
 
-    class présente(Patient >> Symptomes):
-        pass
+        # Instanciation des Orientation
+        Orientation('Hopital')
+        Orientation('Maison')
 
-    class est_enceinte(DataProperty, FunctionalProperty):
-        range = [bool]
-        domain = [Patient]
+        class orienté_vers(Patient >> Orientation):
+            pass
 
-    class poids(DataProperty, FunctionalProperty):
-        range = [float]
-        domain = [Patient]
+        class ausculté_par(Patient >> Medecin):
+            pass
 
-    class ID(DataProperty, FunctionalProperty):
-        range = [str]
-        domain = [Patient]
-        pass
-
-    class taille(DataProperty, FunctionalProperty):
-        range = [int]
-        domain = [Patient]
-        pass
-
-    class Temperature(DataProperty, FunctionalProperty):
-        range = [int]
-        domain = [Patient]
-        pass
-
-    class Gravité_symptomes(DataProperty):
-        range = [str]
-        domain = [Patient]
-        pass
-
-    class prise_en_charge(DataProperty):
-        range = [str]
-        domaine = [Patient]
-        pass
-
-    class Orientation(Thing):
-        pass
-
-    # Instanciation des Orientation
-    Orientation('Hopital')
-    Orientation('Maison')
-
-    class orienté_vers(Patient >> Orientation):
-        pass
-
-    class ausculté_par(Patient >> Medecin):
-        pass
-
-    class a_ausculté(Medecin >> Patient):
-        inverse_property = ausculté_par
-        pass
-
-onto.save(file='maladies.owl', format='ntriples')
-
-exec(open('ajoute_patients.py').read())
+        class a_ausculté(Medecin >> Patient):
+            inverse_property = ausculté_par
+            pass
+    # Output vers le fichier .owl
+    # onto.save(file='ontology_patients.owl', format='ntriples')
+    return onto

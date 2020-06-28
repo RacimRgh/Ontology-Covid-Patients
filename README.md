@@ -3,14 +3,11 @@ Creating an ontology using python's owlready2 and rdflib
 
 ## Requirements
 Python3, pip, protege5.5.0
-After downloading and installing Python3, installing pip, use theses commands 
-- pip3 install beautifulsoup4
-- pip3 install urllib
-- pip3 install pandas
-- pip3 install numpy
+After downloading and installing Python3 and pip3, use this command to install the required libraries 
+- pip3 install beautifulsoup4 urllib pandas numpy rdflib owlready2
 ## How to use
 To start it, type in the CMD:
 
-**python3 onto_maladie.py**
+**python3 creation_ontologie.py**
 
-The file *maladies.owl* will be created and updated in the current working directory 
+The file *ontology_patients.owl* will be created and updated in the current working directory 
