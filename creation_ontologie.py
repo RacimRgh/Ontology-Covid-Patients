@@ -12,7 +12,7 @@ from owlready2 import *  # pylint: disable=unused-wildcard-import
 default_world.set_backend(filename="file_back3.sqlite3", exclusive=False)
 
 onto = get_ontology('http://www.semanticweb.org/racim_katia/ontology_covid#')
-myOntology = 'http://www.semanticweb.org/onto_covid#'
+myOntology = 'http://www.semanticweb.org/racim_katia/ontology_covid#'
 
 
 onto = om.create_maladies(onto, myOntology)

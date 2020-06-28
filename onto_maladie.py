@@ -9,7 +9,7 @@ import types
 # Os import pour la gestion des path
 import os
 # Importer les fonctions nécessaire qu'on a créés
-from onto_functions import maladie_existe
+from onto_functions import maladie_existe, get_num_individu
 
 
 def create_maladies(onto, myOntology):
@@ -60,9 +60,9 @@ def create_maladies(onto, myOntology):
                 if "maladies" in lien_maladie[0] and condition:
                     liste_maladies.append(lien_maladie[0].split('/')[-2])
                     nom = lien_maladie[0].split('/')[-2]
-                    if not maladie_existe(onto, nom):
+                    if not maladie_existe(onto, nom) and nom != "allergie":
                         inst_maladie = list(onto.classes())[i]()
-                        inst_maladie.iri = myOntology + nom
+                        inst_maladie.name = nom
             i += 1
     # Output vers le fichier .owl
     # onto.save('ontology_patients.owl', format='ntriples')
