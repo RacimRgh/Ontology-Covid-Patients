@@ -1,13 +1,7 @@
-import rdflib
-
-graph = rdflib.Graph()
-graph.parse("ontology_patients.owl", format='turtle')
-graph.serialize("ontology_patients_out.rdf", "turtle")
-
 
 # Requete pour avoir les patients selon les objects properties (relations)
 # prend - habite_a - est_atteint_de - présente -ausculté_par - orienté_vers
-def get_selon_obj_props(prop='prend'):
+def get_selon_obj_props(graph, prop='prend'):
     requete = f"""
     prefix ns1: <http://www.semanticweb.org/racim_katia/ontology_covid#>
     prefix ns2: <http://www.w3.org/2002/07/owl#>
@@ -30,7 +24,7 @@ def get_selon_obj_props(prop='prend'):
 # Requete pour avoir les patients selon une ou plusieurs de leurs data properties
 # Les arguments sont optionnels, pour en choisir un il suffit de faire l'appel comme cet exemple
 # get_selon_data_prop(sexep='f', temp=37)
-def get_selon_data_prop(agep=150, sexep='.', poidsp=0, taillep=0, temp=35, enceintep=False):
+def get_selon_data_prop(graph, agep=150, sexep='.', poidsp=0, taillep=0, temp=35):
     requete = f"""
     prefix ns1: <http://www.semanticweb.org/racim_katia/ontology_covid#>
     prefix ns2: <http://www.w3.org/2002/07/owl#>
@@ -48,19 +42,20 @@ def get_selon_data_prop(agep=150, sexep='.', poidsp=0, taillep=0, temp=35, encei
         ?code ns1:Taille ?taille .
         ?code ns1:Temperature ?temperature .
         ?code ns1:Est_Enceinte ?enceinte .
+        ?code ns1:Suspicion_Covid ?susp .
         FILTER((?age < {agep})
             && regex(?sexe, '{sexep}', 'i')
             && (?poids > {poidsp})
             && (?taille > {taillep})
             && (?temperature > {temp})
-            && (?enceinte = {enceintep}))
+            && (?susp = true))
     }}
     """
     return graph.query(requete)
 
 
 # Requete pour avoir les patients selon leur Wilaya
-def get_selon_wilaya(wilaya='Alger'):
+def get_selon_wilaya(graph, wilaya='Alger'):
     requete = f"""
     prefix ns1: <http://www.semanticweb.org/racim_katia/ontology_covid#>
     prefix ns2: <http://www.w3.org/2002/07/owl#>
@@ -68,11 +63,12 @@ def get_selon_wilaya(wilaya='Alger'):
     prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
     prefix xsd: <http://www.w3.org/2001/XMLSchema#>
     prefix xml: <http://www.w3.org/XML/1998/namespace>
-    SELECT ?id ?nom ?adr
+    SELECT ?id ?nom ?prenom ?adr
     WHERE{{
         ?code rdf:type ns1:Patient .
         ?code ns1:ID ?id .
         ?code ns1:Nom ?nom .
+        ?prenom ns1:Prenom ?prenom .
         ?adr rdf:type ns1:{wilaya} .
         ?code ns1:habite_a ?adr
     }}
@@ -82,7 +78,7 @@ def get_selon_wilaya(wilaya='Alger'):
 
 # Requete pour avoir les patients selon le type de maladie
 # Les types de maladies sont les sous classes de 'Maladies'
-def get_selon_type_maladie(maladiep='cancer'):
+def get_selon_type_maladie(graph, maladiep='pneumologie'):
     requete = f"""
     prefix ns1: <http://www.semanticweb.org/racim_katia/ontology_covid#>
     prefix ns2: <http://www.w3.org/2002/07/owl#>
@@ -102,8 +98,29 @@ def get_selon_type_maladie(maladiep='cancer'):
     return graph.query(requete)
 
 
+# Requete pour avoir les patients selon les noms de maladies
+def get_selon_nom_maladie(graph, mld='pneumonie'):
+    requete = f"""
+    prefix ns1: <http://www.semanticweb.org/racim_katia/ontology_covid#>
+    prefix ns2: <http://www.w3.org/2002/07/owl#>
+    prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    prefix xsd: <http://www.w3.org/2001/XMLSchema#>
+    prefix xml: <http://www.w3.org/XML/1998/namespace>
+    SELECT ?id ?nom ?maladie
+    WHERE{{
+        ?code rdf:type ns1:Patient .
+        ?code ns1:ID ?id .
+        ?code ns1:Nom ?nom .
+        ?code ns1:est_atteint_de ?maladie .
+        ?code ns1:est_atteint_de ns1:{mld} .
+    }}
+    """
+    return graph.query(requete)
 # Requete pour avoir les patients selon les médicaments qu'ils prennent
-def get_selon_traitement(medic='paracétamol'):
+
+
+def get_selon_traitement(graph, medic='paracétamol'):
     requete = f"""
     prefix ns1: <http://www.semanticweb.org/racim_katia/ontology_covid#>
     prefix ns2: <http://www.w3.org/2002/07/owl#>
@@ -124,29 +141,8 @@ def get_selon_traitement(medic='paracétamol'):
     return graph.query(requete)
 
 
-# Requete pour avoir les patients selon les noms de maladies
-def get_selon_nom_maladie(mld='pneumonie'):
-    requete = f"""
-    prefix ns1: <http://www.semanticweb.org/racim_katia/ontology_covid#>
-    prefix ns2: <http://www.w3.org/2002/07/owl#>
-    prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-    prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-    prefix xsd: <http://www.w3.org/2001/XMLSchema#>
-    prefix xml: <http://www.w3.org/XML/1998/namespace>
-    SELECT ?id ?nom ?maladie
-    WHERE{{
-        ?code rdf:type ns1:Patient .
-        ?code ns1:ID ?id .
-        ?code ns1:Nom ?nom .
-        ?code ns1:est_atteint_de ?maladie .
-        ?code ns1:est_atteint_de ns1:{mld} .
-    }}
-    """
-    return graph.query(requete)
-
-
 # Requete pour avoir les patients selon le medecin qui les a ausculté
-def get_selon_medecin(nom='Aissat_Abdelhak'):
+def get_selon_medecin(graph, nom='Aissat_Abdelhak'):
     requete = f"""
     prefix ns1: <http://www.semanticweb.org/racim_katia/ontology_covid#>
     prefix ns2: <http://www.w3.org/2002/07/owl#>
@@ -167,7 +163,7 @@ def get_selon_medecin(nom='Aissat_Abdelhak'):
 
 
 # Requete pour avoir les patients selon la gravité de symptomes
-def get_selon_gravité(gravité='sévère'):
+def get_selon_gravité(graph, gravité='sévère'):
     requete = f"""
     prefix ns1: <http://www.semanticweb.org/racim_katia/ontology_covid#>
     prefix ns2: <http://www.w3.org/2002/07/owl#>
@@ -187,7 +183,7 @@ def get_selon_gravité(gravité='sévère'):
 
 
 # Requete pour avoir les patients et medecins selon la date de consultation
-def get_selon_date_consultation(date='2020'):
+def get_selon_date_consultation(graph, date='2020'):
     requete = f"""
     prefix ns1: <http://www.semanticweb.org/racim_katia/ontology_covid#>
     prefix ns2: <http://www.w3.org/2002/07/owl#>
@@ -212,7 +208,7 @@ def get_selon_date_consultation(date='2020'):
 
 
 # Requete pour récupérer le nombre de patients suspectés de covid à une date donnée
-def get_nombre_covid_date(date='2020'):
+def get_nombre_covid_date(graph, date='2020'):
     requete = f"""
     prefix ns1: <http://www.semanticweb.org/racim_katia/ontology_covid#>
     prefix ns2: <http://www.w3.org/2002/07/owl#>
@@ -238,7 +234,7 @@ def get_nombre_covid_date(date='2020'):
 
 
 # Requete pour récupérer le nombre de patients atteints de covid détectés par un medecin
-def get_nombre_covid_medecin():
+def get_nombre_covid_medecin(graph):
     requete = f"""
     prefix ns1: <http://www.semanticweb.org/racim_katia/ontology_covid#>
     prefix ns2: <http://www.w3.org/2002/07/owl#>
@@ -246,7 +242,7 @@ def get_nombre_covid_medecin():
     prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
     prefix xsd: <http://www.w3.org/2001/XMLSchema#>
     prefix xml: <http://www.w3.org/XML/1998/namespace>
-    SELECT ?id_m (COUNT(?id_m) as ?idm) ?id_p
+    SELECT (COUNT(?id_m) as ?idm)
     WHERE{{
         ?codem rdf:type ns1:Medecin .
         ?codem ns1:ID ?id_m .
@@ -257,6 +253,50 @@ def get_nombre_covid_medecin():
         FILTER (?susp = true)
     }}
     GROUP BY ?susp
+    """
+    return graph.query(requete)
+
+
+# Requete pour avoir le nombre de patients atteints selon la wilaya
+def get_nombre_par_wilaya(graph, wilaya='Alger'):
+    requete = f"""
+    prefix ns1: <http://www.semanticweb.org/racim_katia/ontology_covid#>
+    prefix ns2: <http://www.w3.org/2002/07/owl#>
+    prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    prefix xsd: <http://www.w3.org/2001/XMLSchema#>
+    prefix xml: <http://www.w3.org/XML/1998/namespace>
+    SELECT (COUNT(?susp) as ?countp)
+    WHERE{{
+        ?code rdf:type ns1:Patient .
+        ?code ns1:ID ?id .
+        ?code ns1:Nom ?nom .
+        ?adr rdf:type ns1:{wilaya} .
+        ?code ns1:habite_a ?adr .
+        ?code ns1:Suspicion_Covid ?susp .
+        FILTER (?susp = true)
+    }}
+    GROUP BY ?susp
+    """
+    return graph.query(requete)
+
+
+# Requete pour avoir le nombre de patient selon l'une des valeurs des propriétés
+def get_nombre_prop_valeur(graph, prop='orienté_vers', valeur='Hopital'):
+    requete = f"""
+    prefix ns1: <http://www.semanticweb.org/racim_katia/ontology_covid#>
+    prefix ns2: <http://www.w3.org/2002/07/owl#>
+    prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    prefix xsd: <http://www.w3.org/2001/XMLSchema#>
+    prefix xml: <http://www.w3.org/XML/1998/namespace>
+    SELECT (COUNT(?id) as ?idp)
+    WHERE{{
+        ?code rdf:type ns1:Patient .
+        ?code ns1:ID ?id .
+        ?code ns1:{prop} ns1:{valeur}
+    }}
+    GROUP BY ?{valeur}
     """
     return graph.query(requete)
 
@@ -283,10 +323,6 @@ def formater_resultat(resultat):
         code = list(resultat)[i][0]
         nom = list(resultat)[i][1]
         prenom = list(resultat)[i][2]
-        # print(code)
-        # print(nom)
-        # print(prenom)
-        # print('_________________')
         list_mald.append(str(list(resultat)[i][-1]))
         while j < len(resultat) and code == list(resultat)[j][0]:
             list_mald.append(str(list(resultat)[j][-1]))
@@ -298,14 +334,12 @@ def formater_resultat(resultat):
             'Prenom': str(prenom),
             'Maladies': list_mald}
         list_dic.append(dic_mld)
-    return list_dic
+    for elt in list_dic:
+        print(elt)
+        print('______________')
 
 
-resultat = get_selon_obj_props('prend')
-dic_res = formater_resultat(resultat)
-for elt in dic_res:
-    print(elt)
-    print('______________')
+# resultat = get_selon_obj_props('prend')
 # resultat = get_selon_data_prop(sexep='m')
 # resultat = get_selon_wilaya('TiziOuzou')
 # resultat = get_selon_type_maladie('rhumatologie')
@@ -316,4 +350,6 @@ for elt in dic_res:
 # resultat = get_selon_date_consultation('2020')
 # resultat = get_nombre_covid_date()
 # resultat = get_nombre_covid_medecin()
+# resultat = get_nombre_par_wilaya()
+# resultat = get_nombre_prop_valeur()
 # print_resultat(resultat)
