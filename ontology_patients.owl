@@ -7433,7 +7433,6 @@
 <http://www.semanticweb.org/racim_katia/ontology_covid#rougeole> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
 <http://www.semanticweb.org/racim_katia/ontology_covid#rougeole> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.semanticweb.org/racim_katia/ontology_covid#Maladies> .
 <http://www.semanticweb.org/racim_katia/ontology_covid#S12> <http://www.semanticweb.org/racim_katia/ontology_covid#est_atteint_de> <http://www.semanticweb.org/racim_katia/ontology_covid#rougeole> .
-<http://www.semanticweb.org/racim_katia/ontology_covid#S12> <http://www.semanticweb.org/racim_katia/ontology_covid#est_atteint_de> <http://www.semanticweb.org/racim_katia/ontology_covid> .
 <http://www.semanticweb.org/racim_katia/ontology_covid#M99> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
 <http://www.semanticweb.org/racim_katia/ontology_covid#M99> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.semanticweb.org/racim_katia/ontology_covid#Patient> .
 <http://www.semanticweb.org/racim_katia/ontology_covid#M99> <http://www.semanticweb.org/racim_katia/ontology_covid#habite_a> <http://www.semanticweb.org/racim_katia/ontology_covid#Hamala_43> .

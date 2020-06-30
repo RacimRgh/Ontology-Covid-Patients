@@ -261,7 +261,51 @@ def get_nombre_covid_medecin():
     return graph.query(requete)
 
 
-# resultat = get_selon_obj_props('orienté_vers')
+# Fonction pour imprimer le résultat directement sur l'écran (sans traitement)
+def print_resultat(resultat):
+    for res in list(resultat):
+        for x in list(res):
+            print(x)
+        print('___________________________')
+
+
+# Fonction pour arranger les résultat et les mettre dans un dictionnaire (utile pour get_selon_obj_props seulement)
+# Cette fonction va prendre les maladies/traitements/symptomes du patient, les mettre dans une
+# seule liste, puis mettre le code, nom, prenom et la liste dans une dictionnaire python
+def formater_resultat(resultat):
+    j = 0
+    i = 0
+    list_dic = []
+    while i < len(list(resultat)):
+        list_mald = []
+        dic_mld = {}
+        j = i + 1
+        code = list(resultat)[i][0]
+        nom = list(resultat)[i][1]
+        prenom = list(resultat)[i][2]
+        # print(code)
+        # print(nom)
+        # print(prenom)
+        # print('_________________')
+        list_mald.append(str(list(resultat)[i][-1]))
+        while j < len(resultat) and code == list(resultat)[j][0]:
+            list_mald.append(str(list(resultat)[j][-1]))
+            j += 1
+        i = j
+        dic_mld = {
+            'ID': str(code),
+            'Nom': str(nom),
+            'Prenom': str(prenom),
+            'Maladies': list_mald}
+        list_dic.append(dic_mld)
+    return list_dic
+
+
+resultat = get_selon_obj_props('prend')
+dic_res = formater_resultat(resultat)
+for elt in dic_res:
+    print(elt)
+    print('______________')
 # resultat = get_selon_data_prop(sexep='m')
 # resultat = get_selon_wilaya('TiziOuzou')
 # resultat = get_selon_type_maladie('rhumatologie')
@@ -271,8 +315,5 @@ def get_nombre_covid_medecin():
 # resultat = get_selon_gravité()
 # resultat = get_selon_date_consultation('2020')
 # resultat = get_nombre_covid_date()
-resultat = get_nombre_covid_medecin()
-for res in list(resultat):
-    for x in list(res):
-        print(x)
-    print('___________________________')
+# resultat = get_nombre_covid_medecin()
+# print_resultat(resultat)
