@@ -1,2 +1,5 @@
-Nom,Prénom,Spécialité,Exerce à,A consulté le patient,Date consultation,Gravité symptomes,Orientation,Prise en charge
-Aissat,Abdelhak,cardiologie,Chorfa,A51,25 Juin 2020,Sévère,Hopital,Non
+Nom,Prénom,Spécialité,Exerce à,A consulté le patient,Date consultation,Gravité symptomes,Suspicion Covid,Orientation,Prise en charge
+Aissat,Abdelhak,cardiologie,Chorfa,A51,25 Juin 2020,Sévère,Oui,Hopital,Non
+Boussaha,Toufik,généraliste,Batna,B17,13 Mars 2020,Faible,Non,Maison,Non
+Kacimi,Djamila,genycologie,Mila,M99,29 Mai 2020,Modérée,Oui,Hopital,Oui
+Toumi,Manel,neurologue,Baraki,A53,12 Juin 2020,Sévère,Oui,Hopital,Oui

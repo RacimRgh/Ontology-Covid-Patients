@@ -21,6 +21,7 @@ def creation_fiche_medecin(onto):
         # Instancier le médecin
         medecin = classes[get_num_classe('Medecin', onto)]()
         medecin.name = str(row['Nom']) + '_' + str(row['Prénom'])
+        medecin.ID = str(row['Nom']) + '_' + str(row['Prénom'])
         medecin.Nom = row['Nom']
         medecin.Prenom.append(row['Prénom'])
         medecin.Spécialité.append(row['Spécialité'])
@@ -28,10 +29,12 @@ def creation_fiche_medecin(onto):
         medecin.Date_Consultation.append(row['Date consultation'])
         # Infos sur le patient
         patient.ausculté_par.append(onto.search(iri='*'+medecin.name)[0])
+        medecin.a_ausculté.append(onto.search(iri='*'+patient.name)[0])
         patient.Gravité_symptomes.append(row['Gravité symptomes'])
         # Orientation du patient par le medecin
         patient.orienté_vers.append(onto.search(iri='*'+row['Orientation'])[0])
         patient.Prise_En_Charge.append(row['Prise en charge'])
+        patient.Suspicion_Covid = True if row['Suspicion Covid'] == 'Oui' else False
 
     # Output vers le fichier .owl
     # onto.save(file='ontology_patients.owl', format='ntriples')

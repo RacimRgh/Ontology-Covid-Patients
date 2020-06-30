@@ -44,7 +44,7 @@ def create_patient(onto):
         # Instanciation des symptomes
         sympt = [
             'courbatures',
-            'diarhee',
+            'diarrhee',
             'difficulté_respiration',
             'décoloration_des_doigts',
             'essoufflement',
@@ -101,7 +101,7 @@ def create_patient(onto):
 
         class ID(DataProperty, FunctionalProperty):
             range = [str]
-            domain = [Patient]
+            domain = [Humain]
             pass
 
         class Taille(DataProperty, FunctionalProperty):
@@ -124,6 +124,11 @@ def create_patient(onto):
             domain = [Patient]
             pass
 
+        class Suspicion_Covid(DataProperty, FunctionalProperty):
+            range = [bool]
+            domain = [Patient]
+            pass
+
         class Orientation(Thing):
             pass
 
@@ -138,7 +143,6 @@ def create_patient(onto):
             pass
 
         class a_ausculté(Medecin >> Patient):
-            inverse_property = ausculté_par
             pass
     # Output vers le fichier .owl
     # onto.save(file='ontology_patients.owl', format='ntriples')
