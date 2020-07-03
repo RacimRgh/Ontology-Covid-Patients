@@ -20,4 +20,6 @@ The file _ontology_patients.owl_ will be created and updated in the current work
 ## SPARQL queries
 
 To use the SPARQL queries, go to "requetes.py"
-Every query is documented and is ready to use, along with some formatting functions
+Every query is documented and ready to use, along with some formatting functions
+
+The file "menu_requetes.py" contains a menu that allows the user to choose the query he needs and executes it. He is also prompted to give optionnal parameters if necessary (Leave it blank to use the default parameters)
